@@ -113,6 +113,10 @@ data/
 build/
 temp/
 node_modules/
+bin/
+
+# VS Code files
+.vscode*
 
 # secrets
 secrets.json
