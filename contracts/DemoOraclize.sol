@@ -2,8 +2,23 @@ pragma solidity ^0.4.24;
 
 import "./usingOraclize.sol";
 
-contract DemoOralize is usingOraclize {
+contract DemoOraclize is usingOraclize {
     
+    // x coordinate
+    uint256 public x;
+
+    // y coordinate
+    uint256 public y;
+
+    // z coordinate
+    uint256 public z;
+
+    // radius
+    uint256 public radius;
+
+    // time in second
+    uint256 public time;
+
     // indicator constant
     uint256 public constant INDICATOR_SUCCESS = 1;
     
@@ -37,8 +52,19 @@ contract DemoOralize is usingOraclize {
     /** 
     * CONSTRUCTOR
     */
-    constructor() {
+    constructor() public {
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+    }
+
+    /**
+     * @dev Upload data
+     */
+    function uploadData(uint256 _x, uint256 _y, uint256 _z, uint256 _radius, uint256 _time) external {
+        x = _x;
+        y = _y;
+        z = _z;
+        radius = _radius;
+        time = _time;
     }
 
     /**
