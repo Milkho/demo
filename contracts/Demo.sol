@@ -14,7 +14,7 @@ contract Demo is usingOraclize {
     uint256 public oraclizeGasLimit = 200000;
 
     // data source
-    bytes public dataSource = "json(https://api.coinmarketcap.com/v1/ticker/ethereum/).0.price_usd";
+    string public dataSource = "json(https://api.coinmarketcap.com/v1/ticker/ethereum/).0.price_usd";
 
     // revenue amount
     uint256 public constant REVENUE = 1 ether;
@@ -33,7 +33,11 @@ contract Demo is usingOraclize {
      */
     event RevenueEvent(address indexed beneficiary, bytes32 indexed orderId);
 
-    constructor(){
+
+    /** 
+    * CONSTRUCTOR
+    */
+    constructor() {
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
 
@@ -48,8 +52,8 @@ contract Demo is usingOraclize {
         string memory _par2 = string(_param2);
         string memory _par3 = string(_param3);
 
-        // // string memory _query = srtConcat(dataSource, "/",  _par1, _par2, _par3);
-        string memory _query = "https://www.random.org/integers/?num=1&min=1&max=1&col=1&base=10&format=plain&rnd=new";
+        // string memory _query = strConcat(dataSource, "/",  _par1, _par2, _par3);
+        string memory _query = "https://www.random.org/integers/?num=1&min=1&max=2&col=1&base=10&format=plain&rnd=new";
         bytes32 _orderId = oraclize_query("URL", _query, oraclizeGasLimit);
 
         orders[_orderId] = _beneficiary;
@@ -64,13 +68,12 @@ contract Demo is usingOraclize {
     function __callback(bytes32 _orderId, string _result) public {  // solium-disable-line mixedcase
         uint256 _indicator = parseInt(_result);
 
-        if (_indicator == INDICATOR_SUCCESS) {
+        if (_indicator >= INDICATOR_SUCCESS) {
             address _beneficiary = orders[_orderId];
             _beneficiary.transfer(REVENUE);
 
             emit RevenueEvent(_beneficiary, _orderId);
         }
-
     }
 
     /**
@@ -80,6 +83,7 @@ contract Demo is usingOraclize {
     function setGasLimit(uint256 _newGasLimit) external {
         oraclizeGasLimit = _newGasLimit;
     }
-
     
+    // @notice Will receive any eth sent to the contract
+    function () external payable {}
 }

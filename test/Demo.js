@@ -1,12 +1,13 @@
 const Demo = artifacts.require('Demo');
 
 const promisifyLogWatch = require('./helpers/promisifyLogWatch')
+const ether = require('./helpers/ether');
 
 contract('DEMO - test', (accounts) => {
     
     beforeEach(async () => {
         this.demo = await Demo.new();
-        // await this.demo.sendTransaction({ value: ether(0.1) });
+        await this.demo.sendTransaction({ value: ether(1.1) });
     });
 
     it('should create contract with correct params', async() => {
@@ -15,12 +16,12 @@ contract('DEMO - test', (accounts) => {
         const param3 = "gfdg(%^&%^%(*^&$R^%fd";
 
         await this.demo.makeCall(param1, param2, param3);
-
-        // const revenueEventLog = await promisifyLogWatch(this.demo.RevenueEvent({ fromBlock: 'latest' }));
-        // assert.equal(revenueEventLog.event, 'RevenueEvent');
+        
+        const revenueEventLog = await promisifyLogWatch(this.demo.RevenueEvent({ fromBlock: 'latest' }));
+        assert.equal(revenueEventLog.event, 'RevenueEvent');
     
-        // const beneficiary = revenueEventLog.args.beneficiary;
-        // assert.equal(accounts[0], beneficiary);
+        const beneficiary = revenueEventLog.args.beneficiary;
+        assert.equal(accounts[0], beneficiary);
     });
 
 });
