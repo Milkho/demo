@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import "./usingOraclize.sol";
 
-contract Demo is usingOraclize {
+contract DemoOralize is usingOraclize {
     
     // indicator constant
     uint256 public constant INDICATOR_SUCCESS = 1;
@@ -33,7 +33,7 @@ contract Demo is usingOraclize {
      */
     event RevenueEvent(address indexed beneficiary, bytes32 indexed orderId);
 
-    constructor(){
+    constructor() public {
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
 
@@ -44,9 +44,9 @@ contract Demo is usingOraclize {
         
         address _beneficiary = msg.sender;
 
-        string memory _par1 = uint2str(_param1);
-        string memory _par2 = string(_param2);
-        string memory _par3 = string(_param3);
+        string memory _par1 = uint2str(_param1); // solium-disable-line no-unused-vars
+        string memory _par2 = string(_param2); // solium-disable-line no-unused-vars
+        string memory _par3 = string(_param3); // solium-disable-line no-unused-vars
 
         // // string memory _query = srtConcat(dataSource, "/",  _par1, _par2, _par3);
         string memory _query = "https://www.random.org/integers/?num=1&min=1&max=1&col=1&base=10&format=plain&rnd=new";
